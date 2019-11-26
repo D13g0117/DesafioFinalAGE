@@ -3,7 +3,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AgentAGE1 {
+public class AgentAGE_J_G {
     public static void main(String[] args) {
         //al principio
         Scanner scanner = new Scanner(System.in);

@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-public class Main {
+public class Main_J_G {
 
 
     public static void main(String[] args) throws IOException, CloneNotSupportedException {
@@ -15,8 +15,8 @@ public class Main {
         File f = new File("/Users/vir/Downloads/Desafio_Final_CODE/src/test/java/results.txt");
         f.delete();
 
-        final int INDIVIDUALS = 50;
-        final int N_CYCLES = 100;
+        final int INDIVIDUALS = 10;
+        final int N_CYCLES = 10;
 
 
 
@@ -31,18 +31,15 @@ public class Main {
 
             Individual individual = new Individual();
 
-            for (int i = 0; i <= 12; i++) {
-                individual.code.add(random.nextInt(200));
+            for (int i = 0; i < 2; i++) {
+                individual.code.add(random.nextDouble());
             }
 
-            for (int i = 13; i <= 14; i++) {
-                individual.code.add(random.nextInt(500 - (-500)) - 500);
+            individual.code.add(random.nextDouble() * 200);
 
-            }
+            individual.code.add(random.nextDouble() * 1000);
 
-            for (int i = 15; i <= 17; i++) {
-                individual.code.add(random.nextInt(500));
-            }
+            individual.code.add(random.nextDouble() * 100);
 
             for (int i = 0; i < individual.code.size(); i++) {
                 individual.variances.add(random.nextDouble() * 10);
@@ -85,17 +82,14 @@ public class Main {
 
                 for (int k = 0; k < population.get(j).code.size(); k++) {
 
-                    int nextVal = (int) (random.nextGaussian() * population.get(j).variances.get(k));
-                    int lastVal = population.get(j).code.get(k);
+                    double nextVal = (random.nextGaussian() * population.get(j).variances.get(k));
+                    double lastVal = population.get(j).code.get(k);
                     lastVal += nextVal;
-                    if (k < 13 && lastVal < 0) {
+                    if (lastVal < 0) {
                         lastVal = 0;
-                    } else if (k < 13 && lastVal > 200) {
+                    } else if ((k == 2 && lastVal > 200) || (k == 4 && lastVal > 200)) {
                         lastVal = 200;
-                    } else if (k > 14 && lastVal < 0) {
-                        lastVal = 0;
                     }
-
 
                     population.get(j).code.set(k, lastVal);
 
@@ -145,7 +139,6 @@ public class Main {
         }
 
 
-
         File fa = new File("/Users/vir/Downloads/Desafio_Final_CODE/src/test/java/code.txt");
         fa.delete();
         File fb = new File("/Users/vir/Downloads/Desafio_Final_CODE/src/test/java/score.txt");
@@ -190,8 +183,8 @@ public class Main {
         MultiplayerGameRunner gameRunner = new MultiplayerGameRunner();
         gameRunner.setLeagueLevel(4);
 
-        gameRunner.addAgent(AgentAGE3.class);
-        gameRunner.addAgent(AgentAGE2.class);
+        gameRunner.addAgent(AgentAGE_Gabriel_G.class);
+        gameRunner.addAgent(AgentAGE_Gabriel.class);
         GameResult result = gameRunner.simulate();
         Integer myScore = result.scores.get(0);
         Integer rivalScore = result.scores.get(1);
@@ -201,13 +194,13 @@ public class Main {
             MultiplayerGameRunner gameRunner2 = new MultiplayerGameRunner();
             gameRunner2.setLeagueLevel(4);
 
-            gameRunner2.addAgent(AgentAGE3.class);
-            gameRunner2.addAgent(AgentAGE2.class);
+            gameRunner2.addAgent(AgentAGE_Gabriel_G.class);
+            gameRunner2.addAgent(AgentAGE_Gabriel.class);
             GameResult result2 = gameRunner2.simulate();
             Integer myScore2 = result2.scores.get(0);
             Integer rivalScore2 = result2.scores.get(1);
             double fitness2 = myScore2 - rivalScore2;
-            fitness = (fitness+fitness2) / 2;
+            fitness = (fitness + fitness2) / 2;
         }
 
         return fitness;
@@ -217,7 +210,7 @@ public class Main {
 
         final int EVAL_SIZE = 10;
 
-        public ArrayList<Integer> code;
+        public ArrayList<Double> code;
         public ArrayList<Double> variances;
         public ArrayList<Integer> improval;
         public double fittnessVal;
@@ -234,7 +227,7 @@ public class Main {
             clone = (Individual) super.clone();
             clone.fittnessVal = this.fittnessVal;
             clone.variances = (ArrayList<Double>) this.variances.clone();
-            clone.code = (ArrayList<Integer>) this.code.clone();
+            clone.code = (ArrayList<Double>) this.code.clone();
             clone.improval = (ArrayList<Integer>) this.improval.clone();
             return clone;
         }
